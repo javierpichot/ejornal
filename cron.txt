@@ -1,0 +1,31 @@
+30   3   *   *   *   /bin/bash /var/vmail/backup/backup_mysql.sh
+
+# iRedAPD: Clean up expired tracking records hourly.
+1   *   *   *   *   python /opt/iredapd/tools/cleanup_db.py >/dev/null
+
+# iRedAPD: Convert SPF DNS record of specified domain names to IP
+#          addresses/networks hourly.
+2   *   *   *   *   python /opt/iredapd/tools/spf_to_greylist_whitelists.py >/dev/null
+
+# iRedMail: Cleanup Amavisd database
+1   2   *   *   *   python /opt/www/iredadmin/tools/cleanup_amavisd_db.py >/dev/null
+
+# iRedAdmin: Clean up sql database.
+1   *   *   *   *   python /opt/www/iredadmin/tools/cleanup_db.py >/dev/null 2>&1
+
+# iRedAdmin: Delete mailboxes on file system which belong to removed accounts.
+1   *   *   *   *   python /opt/www/iredadmin/tools/delete_mailboxes.py
+# iRedMail: Cleanup Roundcube SQL database
+2   2   *   *   *   /usr/bin/php /opt/www/roundcubemail/bin/cleandb.sh >/dev/null
+
+# iRedMail: Cleanup Roundcube temporary files under 'temp/' directory
+2   2   *   *   *   /usr/bin/php /opt/www/roundcubemail/bin/gc.sh >/dev/null
+# iRedMail: Backup SOGo data databases on 04:01AM
+1   4   *   *   *   /bin/bash /var/vmail/backup/backup_sogo.sh
+
+# iRedMail: update Awstats statistics for web hourly
+1   */1   *   *   *   /usr/bin/perl /usr/lib/cgi-bin/awstats.pl -update -config=web >/dev/null
+
+# iRedMail: update Awstats statistics for smtp hourly
+1   */1   *   *   *   /usr/bin/perl /usr/lib/cgi-bin/awstats.pl -update -config=smtp >/dev/null
+
