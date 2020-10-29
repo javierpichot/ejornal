@@ -41,8 +41,19 @@ Luego correr:
   * npm cache clear (algunas versiones ya no hacen solo)
   * npm install --cache /tmp/empty-cache
   * Puede que tenga problemas por usar una consola sin permisos de administrador (si es el caso ejecute la consola como administrador)
-
-
+  * Si aun tiene problemas, sobre todo con Vue y Jquery, haga lo siguiente:
+    Colocar en el package.json "vue-loader": "^15.5.1" o correr por consola: npm i vue-loader
+    Luego correr:
+    npm install vue-template-compiler@latest vue@latest
+    npm install --save vuex
+    npm i vue-moment
+    npm i vuetable-2
+    npm install --save luxon vue-datetime weekstart
+    npm i vuejs-datetimepicker
+    npm i vue-events
+    npm i vue-multiselect
+    npm install --save vuejs-datepicker
+    Si aun continua con problemas pruebe eliminando el package-lock.son y volviendo a correr: npm install
 
 
 ### Servidor
@@ -63,3 +74,24 @@ Luego correr:
   * npm cache clear (algunas versiones ya no hacen solo)
   * npm install --cache /tmp/empty-cache
   * Puede que tenga problemas por usar una consola sin permisos de administrador (si es el caso ejecute la consola como administrador)
+  * Si aun tiene problemas, sobre todo con Vue y Jquery, haga lo siguiente:
+    Colocar en el package.json "vue-loader": "^15.5.1" o correr por consola: npm i vue-loader
+    Luego correr:
+    npm install vue-template-compiler@latest vue@latest
+    npm install --save vuex
+    npm i vue-moment
+    npm i vuetable-2
+    npm install --save luxon vue-datetime weekstart
+    npm i vuejs-datetimepicker
+    npm i vue-events
+    npm i vue-multiselect
+    npm install --save vuejs-datepicker
+    Si aun continua con problemas pruebe eliminando el package-lock.son y volviendo a correr: npm install
+    Si aun sigue sin funcionar elimine la carpeta node_modules y vuelva a correr:
+    - npm i
+    - instale cross-env y limpie el cache si es necesario con npm cache clean --force
+    - npm run dev
+- Si aún tiene problemas vea lo siguiente:
+  * Debe tener una version de Node Js superior a la 8 instalada.
+  * Si sigue sin funcionar pruebe volviendo a instalar Node Js, elimine la carpeta de node_modules y vuelve a instalar las dependencias.
+  * Si no funciona aún Vue, pruebe compilar todo con: npm run dev. Allí debería levantar

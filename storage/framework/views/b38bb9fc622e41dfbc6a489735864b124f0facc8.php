@@ -1,48 +1,49 @@
-@extends('adminlte::layouts.vue')
-@section('titulo', 'Gestion de comunicaciones de '. $trabajador->nombre. ' '.$trabajador->apellido)
+<?php $__env->startSection('titulo', 'Gestion de comunicaciones de '. $trabajador->nombre. ' '.$trabajador->apellido); ?>
 
-@section('menu-empresa')
-	@include('empresa.partials.menu_empresa', ['empresa' => $empresa])
-@endsection
+<?php $__env->startSection('menu-empresa'); ?>
+	<?php echo $__env->make('empresa.partials.menu_empresa', ['empresa' => $empresa], array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+<?php $__env->stopSection(); ?>
 
-@push('styles')
+<?php $__env->startPush('styles'); ?>
 	<!-- Date Picker -->
-    <link rel="stylesheet" href="{{ asset('bower_components/bootstrap-datetimepicker.min.css') }}">
-@endpush
-@section('main-content')
+    <link rel="stylesheet" href="<?php echo e(asset('bower_components/bootstrap-datetimepicker.min.css')); ?>">
+<?php $__env->stopPush(); ?>
+<?php $__env->startSection('main-content'); ?>
 	<div>
 			<nav aria-label="breadcrumb">
 					<ol class="breadcrumb">
-						<li class="breadcrumb-item" aria-current="page"><a href="{{ route('empresa.show', ['id' => $empresa->id, 'name' => $empresa->nombre] )}}">Dashboard de {{ $empresa->nombre }}</a></li>
-						<li class="breadcrumb-item" aria-current="page">  <a href="{{ route('empresa.trabajadores.index', ['id' => $empresa->id, 'name' => $empresa->nombre]) }}">Listado de trabajadores</a></li>
-				<li class="breadcrumb-item active" aria-current="page"><a href="{{ route('trabajador.show', ['id' => $trabajador->id, 'name' => $trabajador->nombre, 'empresa_id' => $empresa->id]) }}">Perfil de {{ $trabajador->nombre }} {{ $trabajador->apellido }}</a></li>
+						<li class="breadcrumb-item" aria-current="page"><a href="<?php echo e(route('empresa.show', ['id' => $empresa->id, 'name' => $empresa->nombre] )); ?>">Dashboard de <?php echo e($empresa->nombre); ?></a></li>
+						<li class="breadcrumb-item" aria-current="page">  <a href="<?php echo e(route('empresa.trabajadores.index', ['id' => $empresa->id, 'name' => $empresa->nombre])); ?>">Listado de trabajadores</a></li>
+				<li class="breadcrumb-item active" aria-current="page"><a href="<?php echo e(route('trabajador.show', ['id' => $trabajador->id, 'name' => $trabajador->nombre, 'empresa_id' => $empresa->id])); ?>">Perfil de <?php echo e($trabajador->nombre); ?> <?php echo e($trabajador->apellido); ?></a></li>
 													<li class="breadcrumb-item active" aria-current="page">Listado de comunicación</li>		 </ol>
 			   </nav>
 			<div class="card">
-							 @include('trabajador.profile.partials.nav_menu_empresa')
+							 <?php echo $__env->make('trabajador.profile.partials.nav_menu_empresa', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
 						   <div class="card-body">
 			   <div class="row" id="app">
 
 				   <div class="col-md-3">
-				   <worker-panel trabajador="{{ $trabajador->nombre }}  {{ $trabajador->apellido }}" url-foto="{{ ($trabajador->photo != "") ? asset('storage/empresas/'. $empresa->id . '/trabajadores/' . $trabajador->id . '/perfil/'. $trabajador->photo ) : asset('img/trabajador/avatar.png' ) }}" sector="{{ $trabajador->sector->nombre or '' }}" tarea="{{ $trabajador->tarea->nombre or '' }}" turno="{{ $trabajador->turno->nombre or ''}}" empresa_id="{{ $empresa->id }}" user_id=" {{ auth()->user()->id }}" trabajador_id="{{ $trabajador->id }}">
+				   <worker-panel trabajador="<?php echo e($trabajador->nombre); ?>  <?php echo e($trabajador->apellido); ?>" url-foto="<?php echo e(($trabajador->photo != "") ? asset('storage/empresas/'. $empresa->id . '/trabajadores/' . $trabajador->id . '/perfil/'. $trabajador->photo ) : asset('img/trabajador/avatar.png' )); ?>" sector="<?php echo e(isset($trabajador->sector->nombre) ? $trabajador->sector->nombre : ''); ?>" tarea="<?php echo e(isset($trabajador->tarea->nombre) ? $trabajador->tarea->nombre : ''); ?>" turno="<?php echo e(isset($trabajador->turno->nombre) ? $trabajador->turno->nombre : ''); ?>" empresa_id="<?php echo e($empresa->id); ?>" user_id=" <?php echo e(auth()->user()->id); ?>" trabajador_id="<?php echo e($trabajador->id); ?>">
 
 
 						<template slot="info-trabajador">
 							<div class="text-center" >
-								@if($ausente->count() >=1)
+								<?php if($ausente->count() >=1): ?>
 									<button class="btn btn-danger"></button>
-									@foreach($ausente as $row)
-										{{ $row->ausentismo_tipo->nombre }}
-									@endforeach
-									{{  $ausente->sum('dias_ausente') }} días
-								@else
+									<?php $__currentLoopData = $ausente; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $row): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+										<?php echo e($row->ausentismo_tipo->nombre); ?>
+
+									<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+									<?php echo e($ausente->sum('dias_ausente')); ?> días
+								<?php else: ?>
 									<button class="btn btn-success"></button> Trabajando
-								@endif
+								<?php endif; ?>
 									<br/><br/>
-								@if(isset($cita->start_date))
+								<?php if(isset($cita->start_date)): ?>
 									<i class="fa fa-clock-o" aria-hidden="true"></i>
-									Proxima cita: {{ $cita->start_date or '' }}
-								@endif
+									Proxima cita: <?php echo e(isset($cita->start_date) ? $cita->start_date : ''); ?>
+
+								<?php endif; ?>
 
 
 							</div>
@@ -50,36 +51,34 @@
 
 							<ul class="list-group list-group-unbordered">
 								<li class="list-group-item">
-									<b>Documento:</b> <a class="pull-right">{{ $trabajador->documento or 'No disponible'}}</a>
+									<b>Documento:</b> <a class="pull-right"><?php echo e(isset($trabajador->documento) ? $trabajador->documento : 'No disponible'); ?></a>
 								</li>
 								<li class="list-group-item">
-									<b>{{ $trabajador->obrasocial->nombre or 'No disponible'}}:</b> <a
-											class="pull-right">{{ $trabajador->numero_afiliado or 'No disponible'}}</a>
+									<b><?php echo e(isset($trabajador->obrasocial->nombre) ? $trabajador->obrasocial->nombre : 'No disponible'); ?>:</b> <a
+											class="pull-right"><?php echo e(isset($trabajador->numero_afiliado) ? $trabajador->numero_afiliado : 'No disponible'); ?></a>
 								</li>
 								<li class="list-group-item">
 									<b>Direccion: </b> <a
-											class="pull-right">{{ $trabajador->observacion_direccion or 'No disponible'}} {{ $trabajador->localidad->nombre  or ''}}</a>
+											class="pull-right"><?php echo e(isset($trabajador->observacion_direccion) ? $trabajador->observacion_direccion : 'No disponible'); ?> <?php echo e(isset($trabajador->localidad->nombre) ? $trabajador->localidad->nombre : ''); ?></a>
 								</li>
 								<li class="list-group-item">
-									<b>Celular: </b> <a class="pull-right">{{ $trabajador->celular or 'No disponible'}}</a>
+									<b>Celular: </b> <a class="pull-right"><?php echo e(isset($trabajador->celular) ? $trabajador->celular : 'No disponible'); ?></a>
 								</li>
 								<li class="list-group-item">
-									<b>Telefono: </b> <a class="pull-right">{{ $trabajador->telefono or 'No disponible'}}</a>
+									<b>Telefono: </b> <a class="pull-right"><?php echo e(isset($trabajador->telefono) ? $trabajador->telefono : 'No disponible'); ?></a>
 								</li>
 								<li class="list-group-item">
 									<b>Agentes de riesgo declarados según puesto: </b>
-									@if (!empty($trabajador->tarea->agente_riesgo_tarea))
-										@foreach($trabajador->tarea->agente_riesgo_tarea as $agente_riesgo)
+									<?php if(!empty($trabajador->tarea->agente_riesgo_tarea)): ?>
+										<?php $__currentLoopData = $trabajador->tarea->agente_riesgo_tarea; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $agente_riesgo): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
 											<button type="button"
-													class="btn btn-block btn-warning btn-sm">{{$agente_riesgo['agente_riesgo'] or ''}}</button>
-										@endforeach
-									@endif
+													class="btn btn-block btn-warning btn-sm"><?php echo e(isset($agente_riesgo['agente_riesgo']) ? $agente_riesgo['agente_riesgo'] : ''); ?></button>
+										<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+									<?php endif; ?>
 								</li>
 							</ul>
 
-							{{-- <div class="text-center">
-								<a class="btn btn-primary"><i class="fa fa-pencil" aria-hidden="true"></i><b>Editar</b></a>
-							</div> --}}
+							
 
 						</template>
 
@@ -88,8 +87,8 @@
 
 					 <div class="col-md-9">
 							<loader v-show="isLoading"></loader>
-							@include('trabajador.comunicacion.partials._created')
-							@include('trabajador.comunicacion.partials._edit')
+							<?php echo $__env->make('trabajador.comunicacion.partials._created', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+							<?php echo $__env->make('trabajador.comunicacion.partials._edit', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
 						 <div class="box box-info">
 							  <div class="box-header">
 								<h3 class="box-title">Gestion de comunicaciones</h3>
@@ -103,23 +102,28 @@
 								<div class="box-header">
 									<h3 class="box-title">Descargar reporte</h3>
 									<div class="btn-group pull-right">
-										{!! Form::open(['route' => 'trabajador.getReporteComunicacion']) !!}
-										<input type="hidden" name="trabajador_id" value="{{ $trabajador->id }}">
-										<input type="hidden" name="empresa_id" value="{{ $empresa->id }}">
+										<?php echo Form::open(['route' => 'trabajador.getReporteComunicacion']); ?>
+
+										<input type="hidden" name="trabajador_id" value="<?php echo e($trabajador->id); ?>">
+										<input type="hidden" name="empresa_id" value="<?php echo e($empresa->id); ?>">
 									   <div class="col-xs-4">
-										   {{ Form::label('fecha_inicio', "Fecha inicio") }}
+										   <?php echo e(Form::label('fecha_inicio', "Fecha inicio")); ?>
+
 											<div id="fecha_cita" class="input-group date">
 													<span class="input-group-addon bg-white"><i class="fa fa-calendar"></i></span>
-													{{ Form::text('fecha_inicio', null, ['class' => 'form-control box-size', 'placeholder' => "Fecha inicio", 'id' => 'fecha_inicio']) }}
+													<?php echo e(Form::text('fecha_inicio', null, ['class' => 'form-control box-size', 'placeholder' => "Fecha inicio", 'id' => 'fecha_inicio'])); ?>
+
 												<span class="help-block" id="fecha_inicio"></span>
 											</div>
 									   </div>
 
 									   <div class="col-xs-4">
-										   {{ Form::label('fecha_fin', "Fecha inicio") }}
+										   <?php echo e(Form::label('fecha_fin', "Fecha inicio")); ?>
+
 											<div  class="input-group date">
 													<span class="input-group-addon bg-white"><i class="fa fa-calendar"></i></span>
-													{{ Form::text('fecha_fin', null, ['class' => 'form-control box-size', 'placeholder' => "Fecha fin", 'id' => 'fecha_fin']) }}
+													<?php echo e(Form::text('fecha_fin', null, ['class' => 'form-control box-size', 'placeholder' => "Fecha fin", 'id' => 'fecha_fin'])); ?>
+
 												<span class="help-block" id="fecha_fin"></span>
 											</div>
 									   </div>
@@ -127,7 +131,8 @@
 									   <div class="col-xs-4" style="margin-top: 24px">
 										   <button type="submit" class="btn btn-primary">Descargar reporte</button>
 									   </div>
-									   {{ Form::close() }}
+									   <?php echo e(Form::close()); ?>
+
 
 
 									</div>
@@ -136,7 +141,7 @@
 
 							  <div class="box-body table-responsive">
 									<vuetable ref="vuetable"
-									api-url="/api/comunicaciones?empresa_id={{ $empresa->id }}&trabajador_id={{ $trabajador->id }}"
+									api-url="/api/comunicaciones?empresa_id=<?php echo e($empresa->id); ?>&trabajador_id=<?php echo e($trabajador->id); ?>"
 									:fields="fields"
 									pagination-path=""
 									:css="css.table"
@@ -166,13 +171,13 @@
 			  </div>
 		   </div>
 	</div>
-@endsection
+<?php $__env->stopSection(); ?>
 
-@push('script')
-	<script src="{{ asset('bower_components/bootstrap-datetimepicker.min.js') }}" ></script>
+<?php $__env->startPush('script'); ?>
+	<script src="<?php echo e(asset('bower_components/bootstrap-datetimepicker.min.js')); ?>" ></script>
 	<!-- Validate -->
-	<script src="{{ asset('bower_components/validate/jquery.validate.min.js') }}" ></script>
-	<script src="{{ asset('bower_components/validate/localization/messages_es.min.js') }}" ></script>
+	<script src="<?php echo e(asset('bower_components/validate/jquery.validate.min.js')); ?>" ></script>
+	<script src="<?php echo e(asset('bower_components/validate/localization/messages_es.min.js')); ?>" ></script>
 	<script type="text/javascript">
 		const swalWithBootstrapButtons = swal.mixin({
 					confirmButtonClass: 'btn btn-success',
@@ -185,7 +190,7 @@
 						sort_order: 'asc',
 						isLoading: false,
 						remitentes: [],
-						trabajador_id: {{ $trabajador->id }},
+						trabajador_id: <?php echo e($trabajador->id); ?>,
 						sortOrder: [
 							{ field: 'created_at', direction: 'desc' }
 						],
@@ -271,7 +276,7 @@
 					newStoreComunicacion () {
 						this.isLoading = true
 						this.$refs.actionCreate.close();
-						axios.post("{{ route('trabajador.comunicacion.store') }}",  {remitente_id: this.form.remitente_id.id, modo_comunicacion_id: this.form.modo_comunicacion_id.id, empresa_id: empresa.id, motivo_comunicacion_id: this.form.motivo_comunicacion_id.id, user_id: user_id, contenido: this.form.contenido, ausentismo_id: this.form.ausentismo_id.id, documentacion_id: this.form.documentacion_id.id, observacion: this.form.observacion, trabajador_id: this.trabajador_id } ).then(response => {
+						axios.post("<?php echo e(route('trabajador.comunicacion.store')); ?>",  {remitente_id: this.form.remitente_id.id, modo_comunicacion_id: this.form.modo_comunicacion_id.id, empresa_id: empresa.id, motivo_comunicacion_id: this.form.motivo_comunicacion_id.id, user_id: user_id, contenido: this.form.contenido, ausentismo_id: this.form.ausentismo_id.id, documentacion_id: this.form.documentacion_id.id, observacion: this.form.observacion, trabajador_id: this.trabajador_id } ).then(response => {
 							this.form.remitente_id = ''
 							this.form.modo_comunicacion_id = ''
 							this.form.motivo_comunicacion_id = ''
@@ -369,31 +374,31 @@
                     },
 
 					getRemitentes () {
-						axios.get("{{ route('remitentes.json') }}").then(response => {
+						axios.get("<?php echo e(route('remitentes.json')); ?>").then(response => {
 							this.remitentes = response.data
 						})
 					},
 
 					getAusentismos () {
-						axios.get("{{ route('ausentismos-comunicaciones.json', ['id' => $trabajador->id ]) }}").then(response => {
+						axios.get("<?php echo e(route('ausentismos-comunicaciones.json', ['id' => $trabajador->id ])); ?>").then(response => {
 							this.ausentismos = response.data
 						})
 					},
 
 					getDocumentos () {
-						axios.get("{{ route('documentos-comunicaciones.json', ['id' => $trabajador->id] ) }}").then(response => {
+						axios.get("<?php echo e(route('documentos-comunicaciones.json', ['id' => $trabajador->id] )); ?>").then(response => {
 							this.documentos = response.data.data
 						})
 					},
 
 					getModos () {
-						axios.get("{{ route('modo-comunicaciones.json') }}").then(response => {
+						axios.get("<?php echo e(route('modo-comunicaciones.json')); ?>").then(response => {
 							this.modos = response.data
 						})
 					},
 
 					getMotivos () {
-						axios.get("{{ route('motivo-comunicaciones.json') }}").then(response => {
+						axios.get("<?php echo e(route('motivo-comunicaciones.json')); ?>").then(response => {
 							this.motivos = response.data
 						})
 					},
@@ -425,4 +430,6 @@
 			});
 	</script>
 
-@endpush
+<?php $__env->stopPush(); ?>
+
+<?php echo $__env->make('adminlte::layouts.vue', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

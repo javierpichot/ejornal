@@ -112,7 +112,7 @@ class ComunicacionController extends Controller
             'comunicacion.remitente' => 'required',
             'comunicacion.motivo_comunicacion' => 'required'
         ]);
-        
+
         $this->checkEmpresa($request->input('empresa_id'));
 
         try {

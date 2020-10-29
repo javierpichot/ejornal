@@ -10,8 +10,6 @@ import VueEvents from 'vue-events';
 import { Datetime } from 'vue-datetime';
 import 'vue-datetime/dist/vue-datetime.css'
 Vue.component('datetime', Datetime);
- 
-
 
 
 // use the plugin
