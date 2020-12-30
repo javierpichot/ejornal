@@ -154,7 +154,7 @@ class ConsultaController extends Controller
 
         $trabajador = Trabajador::findOrFail($id);
 
-        
+
         $cita = Event::whereDate('start_date', '>=', \Carbon\Carbon::now()->format('Y-m-d'))->where('trabajador_id', $trabajador->id)->first();
 
         /*$documentaciones = Documentacion::where('trabajador_id', $trabajador->id)->get();

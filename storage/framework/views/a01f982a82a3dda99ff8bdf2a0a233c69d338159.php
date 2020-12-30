@@ -2,6 +2,7 @@
 
 <?php $__env->startSection('main-content'); ?>
 
+
     <?php echo e(Form::open(['route' => 'admin.profesional.store', 'role' => 'form', 'method' => 'post', 'id' => 'form',  'enctype' => 'multipart/form-data'])); ?>
 
     <nav aria-label="breadcrumb">
@@ -11,6 +12,8 @@
                 <li class="breadcrumb-item active" aria-current="page">Dar de alta nuevo profesional</li>
 </ol>
     </nav>
+
+    <?php echo $__env->make('../../mensajes_validacion', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
 
     <div class="box box-info">
          <div class="box-header">

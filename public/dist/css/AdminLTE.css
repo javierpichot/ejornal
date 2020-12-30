@@ -3251,7 +3251,7 @@ table.text-center th {
 .login-box,
 .register-box {
   width: 360px;
-  margin: 7% auto;
+  margin: 5% auto;
 }
 @media (max-width: 768px) {
   .login-box,
@@ -4974,4 +4974,9 @@ table.text-center th {
   .table-responsive > .table tr td {
     white-space: normal !important;
   }
+}
+
+
+.login-page,.register-page{
+  background-image: url('/img/fondo.jpg');
 }

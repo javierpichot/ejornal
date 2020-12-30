@@ -44,6 +44,7 @@ class EmpresaController extends Controller
      */
     public function show($id)
     {
+
         $this->checkEmpresa($id);
       $total_trabajadores = Trabajador::where('empresa_id', $id)->count();
       $total_usuarios = DB::table('empresa_user')->where('empresa_id', $id)->count();

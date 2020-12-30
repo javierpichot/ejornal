@@ -39,14 +39,14 @@ class ProfesionalFichadaController extends Controller
             $profesional_fichada = new ProfesionalFichada;
             $profesional_fichada->empresa_id = 1;
             $profesional_fichada->profesional_id = auth()->user()->profesional->id;
-            $profesional_fichada->fechahora_entrada = Carbon::now();
+            $profesional_fichada->fechahora_entrada = new Carbon(Carbon::now(), "America/Argentina/Buenos_Aires");
             $profesional_fichada->navegador_entrada = $request->header('User-Agent');
             $profesional_fichada->IP_entrada = $request->ip();
             $profesional_fichada->save();
         } else {
             //Salida
             $profesional_fichada = ProfesionalFichada::where('profesional_id', auth()->user()->profesional->id)->where('fechahora_salida', null)->first();
-            $profesional_fichada->fechahora_salida = Carbon::now();
+            $profesional_fichada->fechahora_salida = new Carbon(Carbon::now(), "America/Argentina/Buenos_Aires");
             $profesional_fichada->navegador_salida = $request->header('User-Agent');
             $profesional_fichada->IP_salida = $request->ip();
             $profesional_fichada->save();
@@ -59,19 +59,32 @@ class ProfesionalFichadaController extends Controller
      * @param Request $request
      * @return JsonResponse
      */
+
     public function getEntradas(Request $request)
     {
 
-        $profesional = Profesional::find(auth()->user()->profesional->id);
+        // $profesional = Profesional::find(auth()->user()->profesional->id);
+        $profesional = Profesional::where('id', auth()->user()->id)->first();
 
         $geo = unserialize(file_get_contents("http://ip-api.com/php/" . $request->ip()));
-        $profesional_fichada = $profesional->profesiona_fichada()->create([
-            'empresa_id' => $request->post('empresa_id'),
-            'fechahora_entrada' => Carbon::now(),
-            'localizacion_entrada' => isset($geo["city"]) ? $geo["city"] : null,
-            'navegador_entrada' => $request->header('User-Agent'),
-            'IP_entrada' => $request->ip()
-        ]);
+
+        $profesional_fichada = new ProfesionalFichada;
+        $profesional_fichada->profesional_id = auth()->user()->profesional->id;
+        $profesional_fichada->empresa_id = $request->post('empresa_id');
+        $profesional_fichada->fechahora_entrada = Carbon::now();
+        $profesional_fichada->localizacion_entrada = isset($geo["city"]) ? $geo["city"] : null;
+        $profesional_fichada->navegador_entrada = $request->header('User-Agent');
+        $profesional_fichada->IP_entrada = $request->ip();
+        $profesional_fichada->save();
+
+
+        // $profesional_fichada = $profesional->profesiona_fichada()->create([
+        //     'empresa_id' => $request->post('empresa_id'),
+        //     'fechahora_entrada' => Carbon::now(),
+        //     'localizacion_entrada' => isset($geo["city"]) ? $geo["city"] : null,
+        //     'navegador_entrada' => $request->header('User-Agent'),
+        //     'IP_entrada' => $request->ip()
+        // ]);
 
         return response()->json([
             'success' => true,

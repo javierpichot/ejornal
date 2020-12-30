@@ -58,6 +58,7 @@ class ProfesionalController extends Controller
      */
     public function store(Request $request)
     {
+
         $rules = array(
             'nombre' => 'required|string|max:191',
             'apellido' => 'required|string|max:191'
@@ -65,6 +66,10 @@ class ProfesionalController extends Controller
 
         // CHECK FORM VALIDATION
         $validator = $this->validate($request, $rules);
+
+        if (!is_null($request->file('foto_documento')) && !isset($request->documento) || empty($request->documento)) {
+          return back()->with('error', 'No has ingresado el numero de documento');
+        }
 
         if (Session::token() !== Input::get('_token')) {
             return response()->json(array(

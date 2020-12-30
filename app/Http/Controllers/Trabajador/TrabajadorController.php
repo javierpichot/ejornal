@@ -5,10 +5,16 @@ namespace App\Http\Controllers\Trabajador;
 use App\Models\Empresa;
 use App\Models\Trabajador;
 use App\Models\Ausentismo;
+use App\Models\AusentismoTipo;
 use App\Models\Incidencia;
 use App\Models\Documentacion;
 use App\Models\Consulta;
 use App\Models\Ticket;
+use App\Models\Remitente;
+use App\Models\ConsultaMotivo;
+use App\Models\ModoComunicacion;
+use App\Models\MotivoComunicacion;
+
 
 use App\Traits\CheckEmpresaTrait;
 
@@ -43,6 +49,11 @@ class TrabajadorController extends Controller
         $widget1= Ausentismo::where( 'trabajador_id', $id)-> where( 'fecha_ausente', '>', Carbon::now()->subDays(30))->get();
         $widget2= Ausentismo::where( 'trabajador_id', $id)-> where( 'fecha_ausente', '>', Carbon::now()->subDays(90))->get();
         $widget3= Ausentismo::where( 'trabajador_id', $id)-> where( 'fecha_ausente', '>', Carbon::now()->subDays(365))->get();
+        $ausentismo_tipo = AusentismoTipo::all();
+        $remitentes = Remitente::all();
+        $consulta_motivos = ConsultaMotivo::all();
+        $modo_comunicaciones = ModoComunicacion::all();
+        $motivo_comunicaciones = MotivoComunicacion::all();
         $total_incidencias=Incidencia::where( 'trabajador_id', $id)->count();
         $total_documentacion=Documentacion::where( 'trabajador_id', $id)->count();
         $total_consultas=Consulta::where( 'trabajador_id', $id)->count();
@@ -53,8 +64,9 @@ class TrabajadorController extends Controller
 
         $roles = Role::get();
 
-        return view('trabajador.profile.show', compact('trabajador', 'empresa','widget1','widget2', 'widget3','total_incidencias','total_documentacion','total_consultas','total_ticket_abierto','total_episodio_ausentismo','roles'));
+        return view('trabajador.profile.show', compact('ausentismo_tipo', 'consulta_motivos', 'modo_comunicaciones', 'motivo_comunicaciones', 'remitentes', 'trabajador', 'empresa','widget1','widget2', 'widget3','total_incidencias','total_documentacion','total_consultas','total_ticket_abierto','total_episodio_ausentismo','roles'));
     }
+
 
 
     public function edit($trabajador_id, $empresa_id)

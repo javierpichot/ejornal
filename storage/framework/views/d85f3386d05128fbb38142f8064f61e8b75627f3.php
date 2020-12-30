@@ -10,7 +10,7 @@
                         <label>Tipo consulta</label>
                         <multiselect required v-model="consultas.consulta_tipo" track-by="nombre" label="nombre" placeholder="Tipo consulta" :options="consulta_tipos" :searchable="true" :allow-empty="false" :multiple="false"></multiselect>
                         <span v-if="errors && errors.consulta_tipo_id"  class="text-danger" role="alert">
-                        <strong>@{{ errors.consulta_tipo_id[0] }}</strong>
+                        <strong>{{ errors.consulta_tipo_id[0] }}</strong>
                         </span>
                     </div>
                 </div>
@@ -21,7 +21,7 @@
                     <div class="form-group">
                       <multiselect required  :disabled="(prestacion_farmacos.cantidad == '' ) === true" v-model="consultas.consulta_prestacion_farmacia_droga[index]" track-by="nombre" label="nombre" placeholder="Medicacion" :options="prestacion_farmacias" :searchable="true" :allow-empty="false" :multiple="false"></multiselect>
                       <span v-if="errors && errors.prestacion_farmacia_droga_id"  class="text-danger" role="alert">
-                        <strong>@{{ errors.prestacion_farmacia_droga_id[0] }}</strong>
+                        <strong>{{ errors.prestacion_farmacia_droga_id[0] }}</strong>
                       </span>
                     </div>
                 </div>
@@ -30,7 +30,7 @@
                     <div class="form-group">
                       <multiselect  :disabled="(prestacion_farmacos[index].cantidad == '' ) === true" v-model="prestacion_farmaco.prestacion_farmacia_droga_id" track-by="nombre" label="nombre" placeholder="Medicacion" :options="prestacion_farmacias" :searchable="true" :allow-empty="false" :multiple="false"></multiselect>
                       <span v-if="errors && errors.prestacion_farmacia_droga_id"  class="text-danger" role="alert">
-                        <strong>@{{ errors.prestacion_farmacia_droga_id[0] }}</strong>
+                        <strong>{{ errors.prestacion_farmacia_droga_id[0] }}</strong>
                       </span>
                     </div>
                 </div>
@@ -52,7 +52,7 @@
                             </div>
 
                         <span v-if="errors && errors.cantidad"  class="text-danger" role="alert">
-                          <strong>@{{ errors.cantidad[0] }}</strong>
+                          <strong>{{ errors.cantidad[0] }}</strong>
                         </span>
                     </div>
                 </div>
@@ -72,7 +72,7 @@
                         <label>Amerita Salida</label>
                       <multiselect v-model="consultas.consulta_reposo" track-by="nombre" label="nombre" placeholder="Amerita Salida" :options="consulta_reposos" :searchable="true" :allow-empty="false" :multiple="false"></multiselect>
                       <span v-if="errors && errors.consulta_reposo_id"  class="text-danger" role="alert">
-                        <strong>@{{ errors.consulta_reposo_id[0] }}</strong>
+                        <strong>{{ errors.consulta_reposo_id[0] }}</strong>
                       </span>
                     </div>
                 </div>
@@ -85,26 +85,13 @@
                         <label>Observaciones</label>
                         <textarea v-model="consultas.observacion" cols="30" rows="2" class="form-control" :class="{ 'is-invalid': errors.observacion }"></textarea>
                         <span v-if="errors && errors.observacion"  class="text-danger" role="alert">
-                        <strong>@{{ errors.observacion[0] }}</strong>
+                        <strong>{{ errors.observacion[0] }}</strong>
                         </span>
                     </div>
                 </div>
             </div>
 
-            {{-- <div class="row">
-
-
-
-
-                <div class="col-md-6 col-sm-6">
-                    <div class="form-group">
-                      <multiselect v-model="form.diagnostico_id" track-by="name" label="nombre" placeholder="Diagnóstico" :options="consulta_tipos" :searchable="true" :allow-empty="false" :multiple="false"></multiselect>
-                      <span v-if="errors && errors.diagnostico_id"  class="text-danger" role="alert">
-                        <strong>@{{ errors.diagnostico_id[0] }}</strong>
-                      </span>
-                    </div>
-                </div>
-            </div> --}}
+            
 
 
             <template v-if="form.consulta_tipo_id.id == 1">
@@ -113,10 +100,10 @@
                         <div class="form-group">
                             <label>Asociar consulta con ausentismo</label>
                         <multiselect v-model="consultas.ausentismo" track-by="fecha_ausente" label="fecha_ausente" placeholder="Ausentismo" :options="ausentismos_trabajador" :searchable="true" :allow-empty="false" :multiple="false" :custom-label="customLabel" :show-labels="false">
-                                <template slot="singleLabel" slot-scope="props"><span class="option__desc"><span class="option__title">@{{ props.option.fecha_ausente }} @{{ props.option.motivo }} </span></span></template>
+                                <template slot="singleLabel" slot-scope="props"><span class="option__desc"><span class="option__title">{{ props.option.fecha_ausente }} {{ props.option.motivo }} </span></span></template>
                         </multiselect>
                         <span v-if="errors && errors.ausentismo_id"  class="text-danger" role="alert">
-                            <strong>@{{ errors.ausentismo_id[0] }}</strong>
+                            <strong>{{ errors.ausentismo_id[0] }}</strong>
                         </span>
                         </div>
                     </div>
@@ -125,7 +112,7 @@
                                 <label>Especialidad*</label>
                         <multiselect required v-model="consultas.consulta_motivo" track-by="nombre" label="nombre" placeholder="Especialidad" :options="consulta_motivos" :searchable="true" :allow-empty="false" :multiple="false" @select="fetchDiagnostico"></multiselect>
                         <span v-if="errors && errors.consulta_motivo_id"  class="text-danger" role="alert">
-                            <strong>@{{ errors.consulta_motivo_id[0] }}</strong>
+                            <strong>{{ errors.consulta_motivo_id[0] }}</strong>
                         </span>
                         </div>
                     </div>
@@ -135,7 +122,7 @@
                             <label>Diagnóstico*</label>
                             <multiselect required v-model="consultas.consulta_diagnostico" track-by="diagnostico" label="diagnostico" placeholder="Diagnóstico" :options="diagnosticos" :searchable="true" :allow-empty="false" :multiple="false"></multiselect>
                             <span v-if="errors && errors.diagnostico_id"  class="text-danger" role="alert">
-                                <strong>@{{ errors.diagnostico_id[0] }}</strong>
+                                <strong>{{ errors.diagnostico_id[0] }}</strong>
                             </span>
                         </div>
                     </div>
@@ -147,7 +134,7 @@
                             <label>Tension Art.</label>
                             <input type="text" v-model="consultas.consulta_control.tension_arterial" class="form-control input-lg" placeholder="Tension Art.">
                             <span v-if="errors && errors.tension_arterial"  class="text-danger" role="alert">
-                            <strong>@{{ errors.tension_arterial[0] }}</strong>
+                            <strong>{{ errors.tension_arterial[0] }}</strong>
                             </span>
                         </div>
                     </div>
@@ -157,7 +144,7 @@
                             <label>Frecuencia Card.</label>
                             <input type="text" v-model="consultas.consulta_control.frecuencia_cardiaca" class="form-control input-lg" placeholder="Frecuencia Card.">
                             <span v-if="errors && errors.frecuencia_cardiaca"  class="text-danger" role="alert">
-                            <strong>@{{ errors.frecuencia_cardiaca[0] }}</strong>
+                            <strong>{{ errors.frecuencia_cardiaca[0] }}</strong>
                             </span>
                         </div>
                     </div>
@@ -167,7 +154,7 @@
                             <label>Peso</label>
                             <input type="text" v-model="consultas.consulta_control.peso" class="form-control input-lg" placeholder="Peso">
                             <span v-if="errors && errors.peso"  class="text-danger" role="alert">
-                            <strong>@{{ errors.peso[0] }}</strong>
+                            <strong>{{ errors.peso[0] }}</strong>
                             </span>
                         </div>
                     </div>
@@ -179,7 +166,7 @@
                             <label>Altura</label>
                             <input type="text" v-model="consultas.consulta_control.altura" class="form-control input-lg" placeholder="Altura">
                             <span v-if="errors && errors.altura"  class="text-danger" role="alert">
-                            <strong>@{{ errors.altura[0] }}</strong>
+                            <strong>{{ errors.altura[0] }}</strong>
                             </span>
                         </div>
                     </div>
@@ -188,7 +175,7 @@
                             <label>Glucemia</label>
                             <input type="text" v-model="consultas.consulta_control.glucemia" class="form-control input-lg" placeholder="Glucemia">
                             <span v-if="errors && errors.glucemia"  class="text-danger" role="alert">
-                            <strong>@{{ errors.glucemia[0] }}</strong>
+                            <strong>{{ errors.glucemia[0] }}</strong>
                             </span>
                         </div>
                     </div>
@@ -197,7 +184,7 @@
                             <label>Saturacion Oxigeno</label>
                             <input type="text" v-model="consultas.consulta_control.saturacion_oxigeno" class="form-control input-lg" placeholder="Saturacion Oxigeno">
                             <span v-if="errors && errors.saturacion_oxigeno"  class="text-danger" role="alert">
-                            <strong>@{{ errors.saturacion_oxigeno[0] }}</strong>
+                            <strong>{{ errors.saturacion_oxigeno[0] }}</strong>
                             </span>
                         </div>
                     </div>
@@ -210,7 +197,7 @@
                             <label>Anamnesis</label>
                             <textarea v-model="consultas.entrevista" cols="30" rows="4" class="form-control" :class="{ 'is-invalid': errors.entrevista }"></textarea>
                             <span v-if="errors && errors.entrevista"  class="text-danger" role="alert">
-                            <strong>@{{ errors.entrevista[0] }}</strong>
+                            <strong>{{ errors.entrevista[0] }}</strong>
                             </span>
                         </div>
                     </div>
@@ -220,7 +207,7 @@
                             <label>Examen fisico</label>
                             <textarea v-model="consultas.examen_fisico" cols="30" rows="4" class="form-control" :class="{ 'is-invalid': errors.examen_fisico }"></textarea>
                             <span v-if="errors && errors.examen_fisico"  class="text-danger" role="alert">
-                            <strong>@{{ errors.examen_fisico[0] }}</strong>
+                            <strong>{{ errors.examen_fisico[0] }}</strong>
                             </span>
                         </div>
                     </div>
@@ -232,7 +219,7 @@
                             <label>Tratamiento</label>
                             <textarea v-model="consultas.tratamiento" cols="30" rows="4" class="form-control" :class="{ 'is-invalid': errors.tratamiento }" ></textarea>
                             <span v-if="errors && errors.tratamiento"  class="text-danger" role="alert">
-                            <strong>@{{ errors.tratamiento[0] }}</strong>
+                            <strong>{{ errors.tratamiento[0] }}</strong>
                             </span>
                         </div>
                     </div>
@@ -242,7 +229,7 @@
                             <label>Plan a seguir*</label>
                             <textarea required v-model="consultas.plan" cols="30" rows="4" class="form-control" :class="{ 'is-invalid': errors.plan }"></textarea>
                             <span v-if="errors && errors.plan"  class="text-danger" role="alert">
-                            <strong>@{{ errors.plan[0] }}</strong>
+                            <strong>{{ errors.plan[0] }}</strong>
                             </span>
                         </div>
                     </div>
@@ -253,7 +240,7 @@
                             <label>Examen complementario</label>
                             <textarea v-model="consultas.examenes_complementarios" cols="30" rows="4" class="form-control" :class="{ 'is-invalid': errors.examenes_complementarios }"></textarea>
                             <span v-if="errors && errors.examenes_complementarios"  class="text-danger" role="alert">
-                            <strong>@{{ errors.examenes_complementarios[0] }}</strong>
+                            <strong>{{ errors.examenes_complementarios[0] }}</strong>
                             </span>
                         </div>
                     </div>
@@ -263,7 +250,7 @@
                             <label>Diagnóstico*</label>
                             <multiselect v-model="consultas.consulta_diagnostico" track-by="diagnostico" label="diagnostico" placeholder="Diagnóstico" :options="diagnosticos" :searchable="true" :allow-empty="false" :multiple="false"></multiselect>
                             <span v-if="errors && errors.consulta_diagnostico"  class="text-danger" role="alert">
-                                <strong>@{{ errors.consulta_diagnostico[0] }}</strong>
+                                <strong>{{ errors.consulta_diagnostico[0] }}</strong>
                             </span>
                         </div>
                     </div>
@@ -276,10 +263,10 @@
                         <div class="form-group">
                             <label>Asociar consulta con ausentismo</label>
                         <multiselect v-model="consultas.ausentismo" track-by="fecha_ausente" label="fecha_ausente" placeholder="Ausentismo" :options="ausentismos_trabajador" :searchable="true" :allow-empty="false" :multiple="false">
-                                <template slot="singleLabel" slot-scope="props"><span class="option__desc"><span class="option__title">@{{ props.option.fecha_ausente }}</span></span></template>
+                                <template slot="singleLabel" slot-scope="props"><span class="option__desc"><span class="option__title">{{ props.option.fecha_ausente }}</span></span></template>
                         </multiselect>
                         <span v-if="errors && errors.ausentismo_id"  class="text-danger" role="alert">
-                            <strong>@{{ errors.ausentismo_id[0] }}</strong>
+                            <strong>{{ errors.ausentismo_id[0] }}</strong>
                         </span>
                         </div>
                     </div>
@@ -288,7 +275,7 @@
                                 <label>Especialidad*</label>
                         <multiselect v-model="consultas.consulta_motivo" track-by="nombre" label="nombre" placeholder="Especialidad" :options="consulta_motivos" :searchable="true" :allow-empty="false" :multiple="false" @select="fetchDiagnostico"></multiselect>
                         <span v-if="errors && errors.consulta_motivo_id"  class="text-danger" role="alert">
-                            <strong>@{{ errors.consulta_motivo_id[0] }}</strong>
+                            <strong>{{ errors.consulta_motivo_id[0] }}</strong>
                         </span>
                         </div>
                     </div>
@@ -298,7 +285,7 @@
                             <label>Diagnóstico*</label>
                             <multiselect v-model="consultas.consulta_diagnostico" track-by="diagnostico" label="diagnostico" placeholder="Diagnóstico" :options="diagnosticos" :searchable="true" :allow-empty="false" :multiple="false"></multiselect>
                             <span v-if="errors && errors.consulta_diagnostico"  class="text-danger" role="alert">
-                                <strong>@{{ errors.consulta_diagnostico[0] }}</strong>
+                                <strong>{{ errors.consulta_diagnostico[0] }}</strong>
                             </span>
                         </div>
                     </div>
@@ -310,7 +297,7 @@
                             <label>Tension Art.</label>
                             <input type="text" v-model="consultas.consulta_control.tension_arterial" class="form-control input-lg" placeholder="Tension Art.">
                             <span v-if="errors && errors.tension_arterial"  class="text-danger" role="alert">
-                            <strong>@{{ errors.tension_arterial[0] }}</strong>
+                            <strong>{{ errors.tension_arterial[0] }}</strong>
                             </span>
                         </div>
                     </div>
@@ -320,7 +307,7 @@
                             <label>Frecuencia Card.</label>
                             <input type="text" v-model="consultas.consulta_control.frecuencia_cardiaca" class="form-control input-lg" placeholder="Frecuencia Card.">
                             <span v-if="errors && errors.frecuencia_cardiaca"  class="text-danger" role="alert">
-                            <strong>@{{ errors.frecuencia_cardiaca[0] }}</strong>
+                            <strong>{{ errors.frecuencia_cardiaca[0] }}</strong>
                             </span>
                         </div>
                     </div>
@@ -330,7 +317,7 @@
                             <label>Peso</label>
                             <input type="text" v-model="consultas.consulta_control.peso" class="form-control input-lg" placeholder="Peso">
                             <span v-if="errors && errors.peso"  class="text-danger" role="alert">
-                            <strong>@{{ errors.peso[0] }}</strong>
+                            <strong>{{ errors.peso[0] }}</strong>
                             </span>
                         </div>
                     </div>
@@ -342,7 +329,7 @@
                             <label>Altura</label>
                             <input type="text" v-model="consultas.consulta_control.altura" class="form-control input-lg" placeholder="Altura">
                             <span v-if="errors && errors.altura"  class="text-danger" role="alert">
-                            <strong>@{{ errors.altura[0] }}</strong>
+                            <strong>{{ errors.altura[0] }}</strong>
                             </span>
                         </div>
                     </div>
@@ -351,7 +338,7 @@
                             <label>Glucemia</label>
                             <input type="text" v-model="consultas.consulta_control.glucemia" class="form-control input-lg" placeholder="Glucemia">
                             <span v-if="errors && errors.glucemia"  class="text-danger" role="alert">
-                            <strong>@{{ errors.glucemia[0] }}</strong>
+                            <strong>{{ errors.glucemia[0] }}</strong>
                             </span>
                         </div>
                     </div>
@@ -360,7 +347,7 @@
                             <label>Saturacion Oxigeno</label>
                             <input type="text" v-model="consultas.consulta_control.saturacion_oxigeno" class="form-control input-lg" placeholder="Saturacion Oxigeno">
                             <span v-if="errors && errors.saturacion_oxigeno"  class="text-danger" role="alert">
-                            <strong>@{{ errors.saturacion_oxigeno[0] }}</strong>
+                            <strong>{{ errors.saturacion_oxigeno[0] }}</strong>
                             </span>
                         </div>
                     </div>
@@ -372,7 +359,7 @@
                             <label>Descripcion</label>
                             <textarea v-model="consultas.enfermeria" cols="30" rows="2" class="form-control" :class="{ 'is-invalid': errors.enfermeria }"></textarea>
                             <span v-if="errors && errors.enfermeria"  class="text-danger" role="alert">
-                            <strong>@{{ errors.enfermeria[0] }}</strong>
+                            <strong>{{ errors.enfermeria[0] }}</strong>
                             </span>
                         </div>
                     </div>

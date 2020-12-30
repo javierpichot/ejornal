@@ -10,9 +10,10 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Empresa;
-
+use App\Models\Comunicacion;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Session;
+use Carbon\Carbon;
 
 class UsuarioController extends Controller
 {
@@ -23,7 +24,7 @@ class UsuarioController extends Controller
      */
     public function index()
     {
-        $users = User::with(['roles'])->get();
+        $users = User::with(['roles'])->where('deleted_at', '=', null)->get();
 
         return view('backend.user.index', compact('users'));
     }
@@ -163,23 +164,28 @@ class UsuarioController extends Controller
     public function destroy($id)
     {
         $user = User::findOrFail($id);
-        if ($user->delete()) {
-            $response = [
-                'id'        =>  $user->id,
-                'status'    =>  'success',
-                'message'   =>  'Registro eliminado',
-            ];
-        } else {
-            $response = [
-                'status'    =>  'error',
-                'message'   =>  'Intente nuevamente'
-            ];
-        }
+        $user->deleted_at = Carbon::now();
+        $user->save();
+        return back();
 
-        if (\request()->ajax()) {
-            return new JsonResponse($response);
-        } else {
-        }
+       // if ($user->delete()) {
+       //    Comunicacion::where('user_id', $id)->delete();
+       //      $response = [
+       //          'id'        =>  $user->id,
+       //          'status'    =>  'success',
+       //          'message'   =>  'Registro eliminado',
+       //      ];
+       //  } else {
+       //      $response = [
+       //          'status'    =>  'error',
+       //          'message'   =>  'Intente nuevamente'
+       //      ];
+       //  }
+
+        // if (\request()->ajax()) {
+        //     return new JsonResponse($response);
+        // } else {
+        // }
     }
 
     public function movimientos()

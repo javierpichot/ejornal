@@ -5,6 +5,9 @@
             url: '{{ route('admin.profesional.getEntradas') }}',
             type: 'POST',
             dataType: 'json',
+            headers: {
+              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
             data: {empresa_id: $(this).attr('data-id')},
             success: function (response) {
                 if (response.success) {
@@ -24,6 +27,9 @@
             url: '{{ route('admin.profesional.getSalidas') }}',
             type: 'POST',
             dataType: 'json',
+            headers: {
+              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
             data: {empresa_id: $(this).attr('data-id')},
             success: function (response) {
                 if (response.success) {

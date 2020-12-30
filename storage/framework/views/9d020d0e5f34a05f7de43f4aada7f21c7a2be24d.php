@@ -1,11 +1,10 @@
-@extends('adminlte::layouts.vue')
-@section('titulo', 'Gestion de consultas de '. $trabajador->nombre. ' '.$trabajador->apellido)
+<?php $__env->startSection('titulo', 'Gestion de consultas de '. $trabajador->nombre. ' '.$trabajador->apellido); ?>
 
-@section('menu-empresa')
-@include('empresa.partials.menu_empresa', ['empresa' => $empresa])
-@endsection
+<?php $__env->startSection('menu-empresa'); ?>
+<?php echo $__env->make('empresa.partials.menu_empresa', ['empresa' => $empresa], array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+<?php $__env->stopSection(); ?>
 
-@section('main-content')
+<?php $__env->startSection('main-content'); ?>
 
 
 
@@ -13,47 +12,49 @@
 <nav aria-label="breadcrumb">
 	<ol class="breadcrumb">
 		<li class="breadcrumb-item" aria-current="page"><a
-				href="{{ route('empresa.show', ['id' => $empresa->id, 'name' => $empresa->nombre] )}}">Dashboard de
-				{{ $empresa->nombre }}</a></li>
+				href="<?php echo e(route('empresa.show', ['id' => $empresa->id, 'name' => $empresa->nombre] )); ?>">Dashboard de
+				<?php echo e($empresa->nombre); ?></a></li>
 		<li class="breadcrumb-item" aria-current="page"> <a
-				href="{{ route('empresa.trabajadores.index', ['id' => $empresa->id, 'name' => $empresa->nombre]) }}">Listado
+				href="<?php echo e(route('empresa.trabajadores.index', ['id' => $empresa->id, 'name' => $empresa->nombre])); ?>">Listado
 				de trabajadores</a></li>
 		<li class="breadcrumb-item active" aria-current="page"><a
-				href="{{ route('trabajador.show', ['id' => $trabajador->id, 'name' => $trabajador->nombre, 'empresa_id' => $empresa->id]) }}">Perfil
-				de {{ $trabajador->nombre }} {{ $trabajador->apellido }}</a></li>
+				href="<?php echo e(route('trabajador.show', ['id' => $trabajador->id, 'name' => $trabajador->nombre, 'empresa_id' => $empresa->id])); ?>">Perfil
+				de <?php echo e($trabajador->nombre); ?> <?php echo e($trabajador->apellido); ?></a></li>
 		<li class="breadcrumb-item active" aria-current="page">Listado de comunicación</li>
 	</ol>
 </nav>
 <div class="card">
-	@include('trabajador.profile.partials.nav_menu_empresa')
+	<?php echo $__env->make('trabajador.profile.partials.nav_menu_empresa', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
 	<div class="card-body">
 		<div class="row" id="app">
 
 			<div class="col-md-3">
 
-				<worker-panel trabajador="{{ $trabajador->nombre }}  {{ $trabajador->apellido }}"
-					url-foto="{{ ($trabajador->photo != "") ? asset('storage/empresas/'. $empresa->id . '/trabajadores/' . $trabajador->id . '/perfil/'. $trabajador->photo ) : asset('img/trabajador/avatar.png' ) }}"
-					sector="{{ $trabajador->sector->nombre or '' }}" tarea="{{ $trabajador->tarea->nombre or '' }}"
-					turno="{{ $trabajador->turno->nombre or ''}}" empresa_id="{{ $empresa->id }}"
-					user_id=" {{ auth()->user()->id }}" trabajador_id="{{ $trabajador->id }}">
+				<worker-panel trabajador="<?php echo e($trabajador->nombre); ?>  <?php echo e($trabajador->apellido); ?>"
+					url-foto="<?php echo e(($trabajador->photo != "") ? asset('storage/empresas/'. $empresa->id . '/trabajadores/' . $trabajador->id . '/perfil/'. $trabajador->photo ) : asset('img/trabajador/avatar.png' )); ?>"
+					sector="<?php echo e(isset($trabajador->sector->nombre) ? $trabajador->sector->nombre : ''); ?>" tarea="<?php echo e(isset($trabajador->tarea->nombre) ? $trabajador->tarea->nombre : ''); ?>"
+					turno="<?php echo e(isset($trabajador->turno->nombre) ? $trabajador->turno->nombre : ''); ?>" empresa_id="<?php echo e($empresa->id); ?>"
+					user_id=" <?php echo e(auth()->user()->id); ?>" trabajador_id="<?php echo e($trabajador->id); ?>">
 
 
 					<template slot="info-trabajador">
 						<div class="text-center">
-							@if($ausente->count() >=1)
+							<?php if($ausente->count() >=1): ?>
 							<button class="btn btn-danger"></button>
-							@foreach($ausente as $row)
-							{{ $row->ausentismo_tipo->nombre }}
-							@endforeach
-							{{  $ausente->sum('dias_ausente') }} días
-							@else
+							<?php $__currentLoopData = $ausente; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $row): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+							<?php echo e($row->ausentismo_tipo->nombre); ?>
+
+							<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+							<?php echo e($ausente->sum('dias_ausente')); ?> días
+							<?php else: ?>
 							<button class="btn btn-success"></button> Trabajando
-							@endif
+							<?php endif; ?>
 							<br /><br />
-							@if(isset($cita->start_date))
+							<?php if(isset($cita->start_date)): ?>
 							<i class="fa fa-clock-o" aria-hidden="true"></i>
-							Proxima cita: {{ $cita->start_date or '' }}
-							@endif
+							Proxima cita: <?php echo e(isset($cita->start_date) ? $cita->start_date : ''); ?>
+
+							<?php endif; ?>
 
 
 						</div>
@@ -62,38 +63,37 @@
 						<ul class="list-group list-group-unbordered">
 							<li class="list-group-item">
 								<b>Documento:</b> <a
-									class="pull-right">{{ $trabajador->documento or 'No disponible'}}</a>
+									class="pull-right"><?php echo e(isset($trabajador->documento) ? $trabajador->documento : 'No disponible'); ?></a>
 							</li>
 							<li class="list-group-item">
-								<b>{{ $trabajador->obrasocial->nombre or 'No disponible'}}:</b> <a
-									class="pull-right">{{ $trabajador->numero_afiliado or 'No disponible'}}</a>
+								<b><?php echo e(isset($trabajador->obrasocial->nombre) ? $trabajador->obrasocial->nombre : 'No disponible'); ?>:</b> <a
+									class="pull-right"><?php echo e(isset($trabajador->numero_afiliado) ? $trabajador->numero_afiliado : 'No disponible'); ?></a>
 							</li>
 							<li class="list-group-item">
 								<b>Direccion: </b> <a
-									class="pull-right">{{ $trabajador->observacion_direccion or 'No disponible'}}
-									{{ $trabajador->localidad->nombre  or ''}}</a>
+									class="pull-right"><?php echo e(isset($trabajador->observacion_direccion) ? $trabajador->observacion_direccion : 'No disponible'); ?>
+
+									<?php echo e(isset($trabajador->localidad->nombre) ? $trabajador->localidad->nombre : ''); ?></a>
 							</li>
 							<li class="list-group-item">
-								<b>Celular: </b> <a class="pull-right">{{ $trabajador->celular or 'No disponible'}}</a>
+								<b>Celular: </b> <a class="pull-right"><?php echo e(isset($trabajador->celular) ? $trabajador->celular : 'No disponible'); ?></a>
 							</li>
 							<li class="list-group-item">
 								<b>Telefono: </b> <a
-									class="pull-right">{{ $trabajador->telefono or 'No disponible'}}</a>
+									class="pull-right"><?php echo e(isset($trabajador->telefono) ? $trabajador->telefono : 'No disponible'); ?></a>
 							</li>
 							<li class="list-group-item">
 								<b>Agentes de riesgo declarados según puesto: </b>
-								@if (!empty($trabajador->tarea->agente_riesgo_tarea))
-								@foreach($trabajador->tarea->agente_riesgo_tarea as $agente_riesgo)
+								<?php if(!empty($trabajador->tarea->agente_riesgo_tarea)): ?>
+								<?php $__currentLoopData = $trabajador->tarea->agente_riesgo_tarea; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $agente_riesgo): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
 								<button type="button"
-									class="btn btn-block btn-warning btn-sm">{{$agente_riesgo['agente_riesgo'] or ''}}</button>
-								@endforeach
-								@endif
+									class="btn btn-block btn-warning btn-sm"><?php echo e(isset($agente_riesgo['agente_riesgo']) ? $agente_riesgo['agente_riesgo'] : ''); ?></button>
+								<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+								<?php endif; ?>
 							</li>
 						</ul>
 
-						{{-- <div class="text-center">
-						<a class="btn btn-primary"><i class="fa fa-pencil" aria-hidden="true"></i><b>Editar</b></a>
-					</div> --}}
+						
 
 					</template>
 
@@ -102,8 +102,8 @@
 
 			<div class="col-md-9">
 				<loader v-show="isLoading"></loader>
-				@include('trabajador.consulta.partials._created')
-				@include('trabajador.consulta.partials._edit')
+				<?php echo $__env->make('trabajador.consulta.partials._created', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+				<?php echo $__env->make('trabajador.consulta.partials._edit', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
 				<div class="box box-info">
 					<div class="box-header">
 						<h3 class="box-title">Gestion de consultas</h3>
@@ -118,7 +118,7 @@
 
 					<div class="box-body table-responsive">
 						<vuetable ref="vuetable"
-							api-url="/api/consultas/trabajador?empresa_id={{ $empresa->id }}&trabajador_id={{ $trabajador->id }}"
+							api-url="/api/consultas/trabajador?empresa_id=<?php echo e($empresa->id); ?>&trabajador_id=<?php echo e($trabajador->id); ?>"
 							:fields="fields" pagination-path="" :css="css.table" :append-params="moreParams"
 							:sort-order="sortOrder" @vuetable:pagination-data="onPaginationData"
 							@vuetable:loading="onLoading" @vuetable:loaded="onLoaded">
@@ -135,70 +135,15 @@
 							@vuetable-pagination:change-page="onChangePage"></vuetable-pagination>
 					</div>
 				</div>
-				{{-- <div class="box box-info">
-				   <div class="box-header">
-					 <h3 class="box-title">Gestion de consultas</h3>
-
-					<a href="#" class="btn btn-primary pull-right" data-toggle="modal" data-target="#newConsulta" style="margin-bottom:25px">Nueva consulta</a>
-				   </div>
-				   <div class="box-body table-responsive">
-					   <table class="table table-striped table-bordered" id="empresa-consultas">
-						   <thead>
-							   <tr>
-								   <td>Fecha y hora</td>
-								   <td>Nombre y apellido</td>
-								   <td>Tipo de consulta</td>
-								   <td>Motivo de consulta</td>
-								   <td>Profesional</td>
-								   <td>Observaciones</td>
-								   <td>Salida</td>
-								   <td style="width:  20%">Acciones</td>
-							   </tr>
-						   </thead>
-						   <tbody>
-							   @foreach($trabajador->consulta AS $consulta)
-
-								   <tr id="consulta_trabajador_{{ $consulta->id }}">
-				<td>{{ $consulta->created_at }}</td>
-				<td>{{ $consulta->trabajador->nombre }} {{ $consulta->trabajador->apellido }}</td>
-				<td>{{ $consulta->consulta_tipo->nombre or '' }}</td>
-				<td>{{ $consulta->consulta_motivo->nombre or '' }}</td>
-				<td>{{ $consulta->user->nombre or '' }}</td>
-				<td>{{ $consulta->observacion or '' }}</td>
-				<td>{{ $consulta->consulta_reposo->nombre or '' }}</td>
-				<td style="width:  20%">
-					<a class="btn btn-primary waves-effect waves-light"
-						href="{{route('trabajador.consulta.view', ['id' => $consulta->id, 'id_empresa' => $empresa->id, 'trabajador_id' => $consulta->trabajador->id ])}}"><i
-							title="ver consulta" class="fa fa-eye"></i></a>
-
-					{!! method_field('DELETE') !!}
-					@csrf
-					<input type="hidden" name="trabajador_id" value="{{ $consulta->trabajador->id }}">
-					<input type="hidden" name="empresa_id" value="{{ $empresa->id }}">
-					<button type="submit" class="btn btn-danger delete-confirm" data-id="{{ $consulta->id}}"
-						data-href="{{ route('trabajador.consulta.destroy', ['id' => $consulta->id]) }}">
-						<i class="fa fa-trash"></i>
-					</button>
-
-					<a class="btn btn-warning" title="Edit" href="#editConsulta" data-toggle="modal"
-						data-href="{{route('trabajador.consulta.edit', ['id' => $consulta->id, 'id_empresa' => $empresa->id, 'trabajador_id' => $consulta->trabajador->id ])}}"><i
-							title="Editar consulta" class="fa fa-pencil"></i></a>
-
-				</td>
-				</tr>
-				@endforeach
-				</tbody>
-				</table>
-			</div>
-		</div> --}}
+				
 
 	</div>
 </div>
 </div>
 </div>
-@endsection
+<?php $__env->stopSection(); ?>
 
-@push('script')
+<?php $__env->startPush('script'); ?>
 <script>
 	const swalWithBootstrapButtons = swal.mixin({
 					confirmButtonClass: 'btn btn-success',
@@ -223,7 +168,7 @@
 				prestacion_farmacias: [],
 				ausentismos_trabajador: [],
 				diagnosticos: [],
-				trabajador_id: {{ $trabajador->id }},
+				trabajador_id: <?php echo e($trabajador->id); ?>,
 				form: {
 					consulta_tipo_id: {
 						id: ''
@@ -345,14 +290,14 @@
 			},
 
 			fetchConsultaReposo () {
-				axios.get("{{ route('consulta-reposo.json') }}").then((result) => {
+				axios.get("<?php echo e(route('consulta-reposo.json')); ?>").then((result) => {
 					this.consulta_reposos = result.data
 				}).catch((err) => {
 
 				});
 			},
 			fetchConsultaMotivo () {
-				axios.get("{{ route('consulta-motivo.json') }}").then((result) => {
+				axios.get("<?php echo e(route('consulta-motivo.json')); ?>").then((result) => {
 					this.consulta_motivos = result.data
 				}).catch((err) => {
 
@@ -360,7 +305,7 @@
 			},
 
 			fetchConsultaTipo () {
-				axios.get("{{ route('consulta-tipo.json') }}").then((result) => {
+				axios.get("<?php echo e(route('consulta-tipo.json')); ?>").then((result) => {
 					this.consulta_tipos = result.data
 				}).catch((err) => {
 
@@ -376,7 +321,7 @@
 			},
 
 			fetchPrestacionFarmaciaDroga () {
-				axios.get("{{ route('getPrestacionFarmacoEmpresa.json') }}?empresa_id={{ $empresa->id }}").then((result) => {
+				axios.get("<?php echo e(route('getPrestacionFarmacoEmpresa.json')); ?>?empresa_id=<?php echo e($empresa->id); ?>").then((result) => {
 					this.prestacion_farmacias = result.data
 				}).catch((err) => {
 
@@ -384,7 +329,7 @@
 			},
 
 			fetchAusentismoTrabajador () {
-				axios.get("{{ route('getAusentismoTrabajador.json') }}?trabajador_id={{ $trabajador->id }}").then((result) => {
+				axios.get("<?php echo e(route('getAusentismoTrabajador.json')); ?>?trabajador_id=<?php echo e($trabajador->id); ?>").then((result) => {
 					this.ausentismos_trabajador = result.data
 				}).catch((err) => {
 
@@ -437,7 +382,7 @@
 			newStoreConsulta () {
 				this.isLoading = true
 				this.$refs.actionCreate.close();
-				axios.post("{{ route('consulta.trabajador.store') }}",  {empresa_id: empresa.id, user_id: user_id, trabajador_id: this.trabajador_id, consulta: this.form, prestacion_farmacos: this.prestacion_farmacos } ).then(response => {
+				axios.post("<?php echo e(route('consulta.trabajador.store')); ?>",  {empresa_id: empresa.id, user_id: user_id, trabajador_id: this.trabajador_id, consulta: this.form, prestacion_farmacos: this.prestacion_farmacos } ).then(response => {
 
 					this.isLoading = false
 					this.$refs.actionCreate.close();
@@ -504,4 +449,6 @@
 		},
 	})
 </script>
-@endpush
+<?php $__env->stopPush(); ?>
+
+<?php echo $__env->make('adminlte::layouts.vue', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

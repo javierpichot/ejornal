@@ -17,6 +17,9 @@ Route::get('/', function () {
 Auth::routes();
 Route::get('/', 'Auth\LoginController@showLoginForm')->name('home');
 
+// Trabajador carga integrada
+Route::resource('carga_integrada', 'CargaIntegradaController');
+
 Route::get('/2fa/enable', 'Backend\Google2FAController@enableTwoFactor')->middleware('auth');
 Route::get('/2fa/disable', 'Backend\Google2FAController@disableTwoFactor')->middleware('auth');
 Route::get('/2fa/validate', 'Auth\LoginController@getValidateToken');
@@ -316,7 +319,7 @@ Route::namespace('Empresa')
 
         //ausentismo
         Route::get('/{id}/{name}/ausentismos', 'AusentismoController@index')->name('ausentismos.index');
-        
+
         Route::get('/{ausentismo_id}/{id_empresa}/ausentismo/edit', 'AusentismoController@edit')->name('ausentismos.edit');
         Route::patch('/{ausentismo_id}/{id_empresa}/ausentismo/update', 'AusentismoController@update')->name('ausentismos.update');
         Route::delete('ausentismo/{ausentismo_id}/destroy', 'AusentismoController@destroy')->name('ausentismos.destroy');
@@ -415,7 +418,6 @@ Route::namespace('Trabajador')->prefix('trabajador')
 
         //Reportes
         Route::post('/reportes/comunicacion', 'ComunicacionController@getReporteComunicacion')->name('getReporteComunicacion');
-
 
 
         //tickets trabajadores
@@ -522,7 +524,7 @@ Route::namespace('Trabajador')->prefix('trabajador')
 
         //Reportes
         Route::get('/{id}/{name}/generar-reporte/{id_empresa}', 'ReporteController@index')->name('reporte.index');
-        
+
         Route::get('/cita/{id}', 'CitaController@getGeneratePdfCita')->name('cita.pdf');
     });
 
@@ -588,11 +590,11 @@ Route::delete('ticket-jornals/{id}/destroy', 'TicketComentarioJornalsController@
 
 
 /**
- * Nuevos routes en json para la api en VueJS 
- * Mejorando la carga del sistema 
+ * Nuevos routes en json para la api en VueJS
+ * Mejorando la carga del sistema
  */
 
-Route::namespace('Empresa')->prefix('api')->middleware('auth')->group(function () { 
+Route::namespace('Empresa')->prefix('api')->middleware('auth')->group(function () {
   Route::get('/tickets/{empresa_id}/json', 'TicketController@getTicketsJson')->name('tickets.json');
   Route::delete('/tickets/{ticket_id}/destroy', 'TicketController@destroy')->name('tickets.destroy');
   Route::put('/tickets/{id}/update', 'TicketController@update')->name('tickets.update');
@@ -603,9 +605,9 @@ Route::namespace('Empresa')->prefix('api')->middleware('auth')->group(function (
 });
 
 
-Route::namespace('Trabajador')->prefix('api')->middleware('auth')->group(function () { 
+Route::namespace('Trabajador')->prefix('api')->middleware('auth')->group(function () {
 
-    
+
     Route::get('/trabajador/{trabajador_id}/{empresa_id}/edit', 'TrabajadorController@edit')->name('trabajador.edit.json');
 
     Route::get('/comunicaciones', 'ComunicacionController@getComTrabajadorJson')->name('comunicaciones.json');
@@ -614,19 +616,19 @@ Route::namespace('Trabajador')->prefix('api')->middleware('auth')->group(functio
     Route::get('/modo-comunicaciones/json', 'ComunicacionController@getModoComunicacion')->name('modo-comunicaciones.json');
     Route::get('/motivo-comunicaciones/json', 'ComunicacionController@getMotivoComunicacion')->name('motivo-comunicaciones.json');
 
-    
+
 
     Route::get('/ausentismos/{id}/json', 'ComunicacionController@getAusentismoTrabajadorJson')->name('ausentismos-comunicaciones.json');
     Route::get('/documentos/{id}/son', 'ComunicacionController@getDocumentosTrabajadorJson')->name('documentos-comunicaciones.json');
 });
 
-Route::namespace('Backend')->prefix('api')->middleware('auth')->group(function () { 
-    
+Route::namespace('Backend')->prefix('api')->middleware('auth')->group(function () {
+
     Route::get('/remitentes/json', 'RemitenteController@getRemitentesJson')->name('remitentes.json');
 });
 
-Route::namespace('Api')->prefix('api')->middleware('auth')->group(function () { 
-    
+Route::namespace('Api')->prefix('api')->middleware('auth')->group(function () {
+
     Route::post('/cita/store', 'CitaApiController@store')->name('cita.store');
 
     Route::get('/consultas/trabajador', 'ConsultaApiController@index')->name('consulta.trabajador.json');

@@ -35,11 +35,22 @@ class HomeController extends Controller
      */
     public function index()
     {
+
         if (auth()->user()->isRole('super-admin')) {
            $empresas = Empresa::get();
+           return view('adminlte::home', compact('empresas'));
        } else {
            $empresas = auth()->user()->empresas()->get();
+           if (count($empresas) == 1) {
+             return redirect()->route('empresa.show', ['id' => $empresas[0]->id, 'name' => $empresas[0]->nombre]);
+           }else {
+             return view('adminlte::home', compact('empresas'));
+           }
        }
-        return view('adminlte::home', compact('empresas'));
+
+
     }
+
+
+
 }

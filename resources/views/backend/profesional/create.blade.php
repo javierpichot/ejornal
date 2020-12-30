@@ -3,6 +3,7 @@
 
 @section('main-content')
 
+
     {{ Form::open(['route' => 'admin.profesional.store', 'role' => 'form', 'method' => 'post', 'id' => 'form',  'enctype' => 'multipart/form-data']) }}
     <nav aria-label="breadcrumb">
     				<ol class="breadcrumb">
@@ -11,6 +12,8 @@
                 <li class="breadcrumb-item active" aria-current="page">Dar de alta nuevo profesional</li>
 </ol>
     </nav>
+
+    @include('../../mensajes_validacion')
 
     <div class="box box-info">
          <div class="box-header">
