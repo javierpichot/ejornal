@@ -30,12 +30,13 @@ Le recomiendo buscar en foros cuando tenga inconvenientes.
 Debe colocar un phpinfo en su index para saber la version de php y datos de valor que le ayudarán a elegir correctamente los archivos a descargar para implementar ésta librería. Este paso es importante, ya que puede tener varios problemas si confunde la versión.
 Recuerde que deberá tener la extensión en el php.ini habilitada.
 - En el php.ini el memory_limit llevarlo a 2048M
+- Si aun hay problemas con la memoria debera ponerla en -1
 
 Luego correr:
 - Correr: composer install
 - Posiblemente haya versiones deprecadas. Corra: composer update y vea de actualizar las correspondientes (eso no podrá correrlo si tiene el memory_limit mas bajo, como en 512)
 - Si tiene problemas considere correr: composer dump-autoload
-- Instale ésta version de Carbon:  "nesbot/carbon": "^2.41"
+- Instale ésta version de Carbon:  "nesbot/carbon": "1.36.2" (especial atencion a problemas de version de carbon)
 - Correr: npm install
 - Si tiene problemas puede probar:
   * npm cache clear (algunas versiones ya no hacen solo)
@@ -54,6 +55,8 @@ Luego correr:
     npm i vue-multiselect
     npm install --save vuejs-datepicker
     Si aun continua con problemas pruebe eliminando el package-lock.son y volviendo a correr: npm install
+ - Si hay problemas con laravel-imap aun. El archivo que debes tocar está en: vendor/webklex/laravel-imap/src/IMAP/Client.php.
+  Reemplaza el contenido por el que se encuentra en: backup_laravel_imap_client/Client.php
 
 
 ### Servidor
@@ -95,3 +98,6 @@ Luego correr:
   * Debe tener una version de Node Js superior a la 8 instalada.
   * Si sigue sin funcionar pruebe volviendo a instalar Node Js, elimine la carpeta de node_modules y vuelve a instalar las dependencias.
   * Si no funciona aún Vue, pruebe compilar todo con: npm run dev. Allí debería levantar
+
+- Si hay problemas con laravel-imap aun. El archivo que debes tocar está en: vendor/webklex/laravel-imap/src/IMAP/Client.php.
+   Reemplaza el contenido por el que se encuentra en: backup_laravel_imap_client/Client.php
